@@ -4,6 +4,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense,Input,Activation
 from tensorflow.keras.datasets import boston_housing
 from tensorflow.keras import layers
+from sklearn.model_selection import train_test_split
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -20,7 +21,7 @@ def plot_loss(history):
     plt.grid(True)
     plt.show()
 
-def plot_data(x_data,y_data,x,y,title=None):
+def plot_data(x_data,y_data,x,y,title):
     plt.figure(figsize=(15,5))
     plt.scatter(x_data,y_data,label='Ground Truth',color='green',alpha=0.5)
     plt.plot(x,y,color='k',label='Model Predictions')
@@ -29,6 +30,7 @@ def plot_data(x_data,y_data,x,y,title=None):
     plt.xlabel('Average Number of Rooms')
     plt.ylabel('Price [$k]')
     plt.title(True)
+    plt.title(title)
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -38,7 +40,9 @@ SEED_VALUE = 42
 np.random.seed(SEED_VALUE)
 tf.random.set_seed(SEED_VALUE)
 #Load data housing bostos
-(x_train,y_train),(x_test,y_test) = boston_housing.load_data()
+(x_train,y_train),(x_test,y_test) = boston_housing.load_data(test_split=0.2)
+#div data # Dividir los datos en 80% para entrenamiento y 20% para pruebas
+#x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
 #feature selected model # colum is five
 boston_feature = {
     'Average Number of Rooms':5,
@@ -56,8 +60,8 @@ plt.show()
 
 #create model type sequential
 model = Sequential()
-#define model using single neuron
-model.add(Dense(units=1,input_shape=(1,)))
+#define model using single neuron y=mx+b
+model.add(Dense(1,input_shape=(1,)))
 #show features neuronal networking
 model.summary()
 
